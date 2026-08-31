@@ -8,16 +8,45 @@ Investigar e implementar técnicas de correlação cruzada aplicadas a séries t
 
 ## Status
 
-🚧 Projeto em desenvolvimento inicial.
+🚧 **Release 1** em desenvolvimento — camadas de Captura, Pré-processamento e Armazenamento
+(ver [docs/ARCHITECTURE.pt-BR.md](docs/ARCHITECTURE.pt-BR.md) §4). A Camada de Análise
+(correlação + mapa de calor) e a integração com o dashboard ficam para a Release 2.
 
 ## Requisitos
 
-- Python 3
+- Python 3.14.7
+- `pip install -r requirements.txt` (dev: `requirements-dev.txt`)
+
+## Arquitetura e contratos
+
+- [docs/ARCHITECTURE.pt-BR.md](docs/ARCHITECTURE.pt-BR.md) — pipeline em camadas
+- [docs/CONTRACTS.pt-BR.md](docs/CONTRACTS.pt-BR.md) — contrato OHLC (servidor `qData_service` x cliente)
+- [docs/adr/](docs/adr/) — decisões arquiteturais
 
 ## Como executar
 
+Configuração versionada em [config/pipeline.yaml](config/pipeline.yaml); segredos em `.env`
+(ver `.env.example`).
+
 ```bash
+# execução offline, a partir de data/raw/ (sem acesso à API)
+python main.py --offline
+
+# execução contra o qData_service (requer credenciais em .env)
 python main.py
+```
+
+Saídas: `data/interim/current_day.parquet` (dia corrente, mutável),
+`data/processed/candles/date=.../` (dias fechados, imutáveis),
+`data/processed/pairs/d_i=.../` (matriz de defasagens) e `data/processed/manifest.yaml`.
+
+Uma amostragem executada de exemplo fica em [samples/](samples/)
+(`python scripts/make_sample.py`).
+
+## Testes
+
+```bash
+pytest
 ```
 
 ## Licença
