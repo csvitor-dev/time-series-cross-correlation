@@ -1,0 +1,27 @@
+symbol: WINJ26
+timeframe: M1
+period:
+  start: "2025-06-01"
+  end: "2026-06-30"
+reference_window_n: 10
+source: qdata_http
+paths:
+  raw: data/raw
+  interim: data/interim
+  processed: data/processed
+holidays:
+  - "2025-06-19"
+  - "2025-07-09"
+  - "2025-09-07"
+  - "2025-10-12"
+  - "2025-11-02"
+  - "2025-11-15"
+  - "2025-11-20"
+  - "2025-12-25"
+  - "2026-01-01"
+  - "2026-02-16"
+  - "2026-02-17"
+  - "2026-04-03"
+  - "2026-04-21"
+  - "2026-05-01"
+  - "2026-06-04"
