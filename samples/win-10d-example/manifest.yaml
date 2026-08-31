@@ -1,0 +1,19 @@
+symbol: WINJ26
+timeframe: M1
+period:
+  start: '2025-06-01'
+  end: '2026-06-30'
+reference_window_n: 10
+source: fixture
+input_sha256: e8ba0d7d44dcf6cbffcc3eba59a50e3d5beef3d1db26bb2f67d4e008654817d5
+sealed_days:
+- '2026-06-17'
+- '2026-06-18'
+- '2026-06-19'
+- '2026-06-22'
+- '2026-06-23'
+- '2026-06-24'
+- '2026-06-25'
+- '2026-06-26'
+- '2026-06-29'
+generated_at: '2026-08-31T19:15:49.791098+00:00'
