@@ -8,9 +8,12 @@ Investigar e implementar técnicas de correlação cruzada aplicadas a séries t
 
 ## Status
 
-🚧 **Release 1** em desenvolvimento — camadas de Captura, Pré-processamento e Armazenamento
-(ver [docs/ARCHITECTURE.pt-BR.md](docs/ARCHITECTURE.pt-BR.md) §4). A Camada de Análise
-(correlação + mapa de calor) e a integração com o dashboard ficam para a Release 2.
+🚧 **Release 2** em desenvolvimento — Camada de Análise: correlação cruzada par a par entre os
+dias de operação, com matriz $\mathbf{V}$, p-valor, estabilidade entre sub-janelas e mapa de calor
+(Pearson e Spearman; ver [docs/ARCHITECTURE.pt-BR.md](docs/ARCHITECTURE.pt-BR.md) §5 e
+[ADR 0004](docs/adr/0004-camada-de-analise-correlacao-cruzada.md)).
+A Release 1 (Captura → Pré-processamento → Armazenamento) já está em `main`.
+Integração com o dashboard, CCF/ρDCCA/MF-DCCA e captura real via API ficam para releases seguintes.
 
 ## Requisitos
 
@@ -29,8 +32,14 @@ Configuração versionada em [config/pipeline.yaml](config/pipeline.yaml); segre
 (ver `.env.example`).
 
 ```bash
-# execução offline, a partir de data/raw/ (sem acesso à API)
+# 1x: gera o fixture sintético offline em data/raw/ (semente fixa)
+python scripts/gen_fixture.py
+
+# pipeline completo offline (captura → ... → análise)
 python main.py --offline
+
+# só recalcular a correlação sobre os candles já armazenados
+python main.py --analysis-only
 
 # execução contra o qData_service (requer credenciais em .env)
 python main.py
@@ -38,9 +47,11 @@ python main.py
 
 Saídas: `data/interim/current_day.parquet` (dia corrente, mutável),
 `data/processed/candles/date=.../` (dias fechados, imutáveis),
-`data/processed/pairs/d_i=.../` (matriz de defasagens) e `data/processed/manifest.yaml`.
+`data/processed/pairs/d_i=.../` (estrutura de defasagens),
+`data/processed/correlations/method=<m>/{pairs,matrix}.parquet` + `heatmap_<m>.png`,
+e `data/processed/manifest.yaml`.
 
-Uma amostragem executada de exemplo fica em [samples/](samples/)
+Uma amostragem executada de exemplo (com heatmap e `REPORT.md`) fica em [samples/](samples/)
 (`python scripts/make_sample.py`).
 
 ## Testes
