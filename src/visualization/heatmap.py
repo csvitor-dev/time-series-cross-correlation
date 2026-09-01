@@ -13,8 +13,6 @@ import pandas as pd
 def plot_heatmap(matrix: pd.DataFrame, method: str, path: str | Path) -> Path:
     labels = list(matrix.columns)
     data = matrix.to_numpy(dtype=float)
-    mask = np.tril(np.ones_like(data, dtype=bool), k=-1)
-    data = np.ma.masked_array(data, mask=mask)
 
     fig, ax = plt.subplots(figsize=(1.1 * len(labels) + 2, 1.1 * len(labels) + 1))
     image = ax.imshow(data, cmap="RdBu_r", vmin=-1.0, vmax=1.0)
@@ -25,10 +23,9 @@ def plot_heatmap(matrix: pd.DataFrame, method: str, path: str | Path) -> Path:
 
     for i in range(len(labels)):
         for j in range(len(labels)):
-            if not mask[i, j]:
-                ax.text(
-                    j, i, f"{data[i, j]:.2f}", ha="center", va="center", fontsize=7
-                )
+            value = data[i, j]
+            if not np.isnan(value):
+                ax.text(j, i, f"{value:.2f}", ha="center", va="center", fontsize=7)
 
     fig.colorbar(image, ax=ax, shrink=0.8, label="coeficiente")
     fig.tight_layout()

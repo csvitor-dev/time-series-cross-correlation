@@ -11,7 +11,8 @@ intradiárias ($d_1$ o dia mais antigo, $d_n$ o mais recente). Para cada par $(d
 $j < i$ define-se $v_{i,j} = \mathrm{corr}(d_i, d_j)$; fixado $d_i$, o período
 $\mathscr{P}_i = (v_{i,j})_1^{\,j=i-1}$ reúne os coeficientes com todos os dias anteriores. A matriz
 $\mathbf{V} = [v_{i,j}]_n^{i,j=1}$ é simétrica, tem diagonal 1 e é exibida como mapa de calor
-(triângulo superior, rótulos $d_n \dots d_1$). A validação não é só visual: p-valor, comparação
+(matriz completa e simétrica, rótulos $d_n \dots d_1$; só o triângulo superior é informativo).
+A validação não é só visual: p-valor, comparação
 entre defasagens e estabilidade entre janelas.
 
 A Release 1 já entrega os candles M1 limpos e selados e a estrutura de pares. Falta calcular os

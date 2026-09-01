@@ -9,7 +9,7 @@ do pipeline sobre um recorte de dados, versionada junto com os artefatos produzi
   - `pairs/d_i=.../` — estrutura de pares de defasagem $\mathcal{P}_i$
   - `correlations/method=<m>/` — coeficientes $v_{i,j}$, p-valor e estabilidade (`pairs.parquet`)
     e a matriz $\mathbf{V}$ (`matrix.parquet`), para Pearson e Spearman
-  - `correlations/heatmap_<m>.png` — mapa de calor (triângulo superior de $\mathbf{V}$)
+  - `correlations/heatmap_<m>.png` — mapa de calor da matriz $\mathbf{V}$ completa e simétrica
   - `REPORT.md` — parâmetros, cobertura por dia e os pares de maior associação
   - `manifest.yaml` — metadados da execução
 
