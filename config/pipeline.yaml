@@ -9,6 +9,15 @@ paths:
   raw: data/raw
   interim: data/interim
   processed: data/processed
+analysis:
+  value: log_return
+  methods: [pearson, spearman]
+  window:
+    start: "09:00"
+    end: "17:55"
+    tz: America/Sao_Paulo
+  min_coverage: 0.90
+  stability_subwindows: 3
 holidays:
   - "2025-06-19"
   - "2025-07-09"
