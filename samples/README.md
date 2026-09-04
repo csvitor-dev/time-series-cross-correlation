@@ -1,11 +1,17 @@
 # samples/
 
 Amostragens **executadas** do procedimento — cada subpasta é o resultado de uma corrida completa
-do pipeline sobre um recorte de dados, versionado junto com os artefatos produzidos.
+do pipeline sobre um recorte de dados, versionada junto com os artefatos produzidos.
 
-- `win-10d-example/` — corrida offline (`scripts/make_sample.py`) sobre os 10 dias de
-  `data/raw/ohlc_winj26_10d.json`: candles selados (`candles/date=.../`), matriz de pares
-  (`pairs/d_i=.../`) e `manifest.yaml`.
+- `win-10d-example/` — corrida offline (`python scripts/gen_fixture.py && python scripts/make_sample.py`)
+  sobre 10 dias sintéticos do WIN:
+  - `candles/date=.../` — candles M1 selados por pregão
+  - `pairs/d_i=.../` — estrutura de pares de defasagem $\mathcal{P}_i$
+  - `correlations/method=<m>/` — coeficientes $v_{i,j}$, p-valor e estabilidade (`pairs.parquet`)
+    e a matriz $\mathbf{V}$ (`matrix.parquet`), para Pearson e Spearman
+  - `correlations/heatmap_<m>.png` — mapa de calor da matriz $\mathbf{V}$ completa e simétrica
+  - `REPORT.md` — parâmetros, cobertura por dia e os pares de maior associação
+  - `manifest.yaml` — metadados da execução
 
-Na Release 2 (Camada de Análise) cada amostragem passa a incluir também o mapa de calor de
-correlação e o report de discussão.
+Os dados são sintéticos (semente fixa em `scripts/gen_fixture.py`): um fator comum diário com peso
+decrescente entre os dias, para o mapa de calor exibir estrutura real.

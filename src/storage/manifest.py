@@ -20,6 +20,7 @@ class Manifest:
         source: str,
         input_sha256: str,
         sealed_days: list[str],
+        analysis: dict | None = None,
     ) -> Path:
         payload = {
             "symbol": symbol,
@@ -31,6 +32,8 @@ class Manifest:
             "sealed_days": sealed_days,
             "generated_at": datetime.now(timezone.utc).isoformat(),
         }
+        if analysis is not None:
+            payload["analysis"] = analysis
         self._file.parent.mkdir(parents=True, exist_ok=True)
         self._file.write_text(yaml.safe_dump(payload, sort_keys=False), encoding="utf-8")
         return self._file

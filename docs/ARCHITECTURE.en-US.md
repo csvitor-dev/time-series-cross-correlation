@@ -114,3 +114,7 @@ The following assumptions, already stated in the research methodology, directly 
 ## 4. Release 1 Scope
 
 The first release covers the **Acquisition**, **Preprocessing**, and **Storage** layers (including the structuring of lag pairs), with the goal of producing the series-specific dataset — organized according to the $\mathcal{P}_i = (v_{i,k})$ model — ready to be consumed by the Analysis layer in a subsequent release, which will include computing the correlation coefficients and generating the heatmap to be integrated into the dashboard.
+
+## 5. Release 2 Scope
+
+The second release implements the **Analysis** layer: given the sealed-day dataset, it computes the correlation matrix $\mathbf{V} = [v_{i,j}]$ between daily series, with $v_{i,j} = \mathrm{corr}(d_i, d_j)$ for $j < i$, and persists the coefficients, the pairwise p-value, and a stability measure across sub-windows. Each day's series is the **close log-return** over a parametrized **uniform intraday window**. Methods are pluggable (`CorrelationMethod`); this release ships **Pearson** and **Spearman** — CCF with lag sweep, ρDCCA, and MF-DCCA follow through the same interface. Visualization produces the **heatmap** of the full, symmetric matrix $\mathbf{V}$ (only the upper triangle is informative, since $v_{i,j}=v_{j,i}$). Dashboard integration remains out of scope. See `docs/adr/0004-camada-de-analise-correlacao-cruzada.md`.

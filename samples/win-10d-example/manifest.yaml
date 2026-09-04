@@ -5,7 +5,7 @@ period:
   end: '2026-06-30'
 reference_window_n: 10
 source: fixture
-input_sha256: e8ba0d7d44dcf6cbffcc3eba59a50e3d5beef3d1db26bb2f67d4e008654817d5
+input_sha256: dedc4ab26d31e983f0f4c1548b87bb57fc7416c41ebfbd751214d7010f45b328
 sealed_days:
 - '2026-06-17'
 - '2026-06-18'
@@ -16,4 +16,26 @@ sealed_days:
 - '2026-06-25'
 - '2026-06-26'
 - '2026-06-29'
-generated_at: '2026-08-31T19:15:49.791098+00:00'
+generated_at: '2026-09-01T02:07:08.991231+00:00'
+analysis:
+  value: log_return
+  methods:
+  - pearson
+  - spearman
+  window:
+    start: 09:00
+    end: '17:55'
+    tz: America/Sao_Paulo
+  min_coverage: 0.9
+  pairs: 45
+  coverage:
+    '2026-06-17': 1.0
+    '2026-06-18': 1.0
+    '2026-06-19': 1.0
+    '2026-06-22': 1.0
+    '2026-06-23': 1.0
+    '2026-06-24': 1.0
+    '2026-06-25': 1.0
+    '2026-06-26': 1.0
+    '2026-06-29': 1.0
+    '2026-06-30': 1.0

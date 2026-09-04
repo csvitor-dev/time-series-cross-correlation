@@ -19,6 +19,20 @@ class Paths(BaseModel):
     processed: Path = Path("data/processed")
 
 
+class Window(BaseModel):
+    start: str = "09:00"
+    end: str = "17:55"
+    tz: str = "America/Sao_Paulo"
+
+
+class AnalysisConfig(BaseModel):
+    value: str = "log_return"
+    methods: list[str] = ["pearson", "spearman"]
+    window: Window = Window()
+    min_coverage: float = 0.90
+    stability_subwindows: int = 3
+
+
 class PipelineConfig(BaseModel):
     symbol: str
     timeframe: str
@@ -27,6 +41,7 @@ class PipelineConfig(BaseModel):
     source: str
     paths: Paths = Paths()
     holidays: list[date] = []
+    analysis: AnalysisConfig = AnalysisConfig()
 
     @classmethod
     def load(cls, path: str | Path = "config/pipeline.yaml") -> "PipelineConfig":

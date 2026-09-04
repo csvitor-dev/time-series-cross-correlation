@@ -46,6 +46,7 @@ def clean(bars: Iterable[OHLCBar]) -> pd.DataFrame:
     grid = pd.Index(
         range(int(frame["time"].iloc[0]), int(frame["time"].iloc[-1]) + 60, 60), name="time"
     )
+    real = set(frame["time"].astype(int))
     dtypes = frame.dtypes.to_dict()
     frame = (
         frame.set_index("time")
@@ -55,4 +56,6 @@ def clean(bars: Iterable[OHLCBar]) -> pd.DataFrame:
         .rename_axis("time")
         .reset_index()
     )
-    return frame.astype(dtypes)
+    frame = frame.astype(dtypes)
+    frame["imputed"] = ~frame["time"].astype(int).isin(real)
+    return frame

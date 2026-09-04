@@ -114,3 +114,7 @@ As seguintes premissas, já declaradas na metodologia da pesquisa, orientam dire
 ## 4. Escopo da Release 1
 
 A primeira release contempla as camadas de **Captura**, **Pré-processamento** e **Armazenamento** (incluindo a estruturação dos pares de defasagem), com o objetivo de produzir a base de dados específica das séries — organizada segundo a modelagem $\mathcal{P}_i = (v_{i,k})$ — pronta para consumo pela camada de Análise em uma release subsequente, que incluirá o cálculo dos coeficientes de correlação e a geração do mapa de calor a ser integrado ao dashboard.
+
+## 5. Escopo da Release 2
+
+A segunda release implementa a **Camada de Análise**: dada a base de dias selados, calcula a matriz de correlação $\mathbf{V} = [v_{i,j}]$ entre as séries diárias, com $v_{i,j} = \mathrm{corr}(d_i, d_j)$ para $j < i$, e persiste os coeficientes, o p-valor par a par e uma medida de estabilidade entre sub-janelas. A série de cada dia é o **retorno log do close** numa **janela intradiária uniforme** parametrizada. Os métodos são plugáveis (`CorrelationMethod`); esta release entrega **Pearson** e **Spearman** — CCF com varredura de lags, ρDCCA e MF-DCCA entram depois pela mesma interface. A visualização gera o **mapa de calor** da matriz $\mathbf{V}$ completa e simétrica (embora, por $v_{i,j}=v_{j,i}$, apenas o triângulo superior seja informativo). A integração ao dashboard existente permanece fora de escopo. Ver `docs/adr/0004-camada-de-analise-correlacao-cruzada.md`.
