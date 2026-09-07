@@ -22,7 +22,7 @@ class QDataHTTPSource(MarketDataSource):
             username=self._settings.username, password=self._settings.password
         )
         response = self._client.post(
-            f"{self._settings.auth_url}{_AUTH_ROUTE}", json=creds.model_dump()
+            f"{self._settings.url}{_AUTH_ROUTE}", json=creds.model_dump()
         )
         response.raise_for_status()
         token = TokenResponse.model_validate(response.json())
@@ -38,7 +38,7 @@ class QDataHTTPSource(MarketDataSource):
         while True:
             page = request.model_copy(update={"offset": offset})
             response = self._client.get(
-                f"{self._settings.http_url}{_OHLC_ROUTE}",
+                f"{self._settings.url}{_OHLC_ROUTE}",
                 params=page.as_query(),
                 headers={"Authorization": f"Bearer {self._token}"},
             )

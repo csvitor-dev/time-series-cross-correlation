@@ -53,7 +53,6 @@ class QDataSettings(BaseSettings):
     model_config = SettingsConfigDict(
         env_prefix="QDATA_", env_file=".env", extra="ignore")
 
-    auth_url: str = ""
-    http_url: str = ""
+    url: str = ""
     username: str = ""
     password: str = ""
