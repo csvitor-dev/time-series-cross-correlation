@@ -51,8 +51,9 @@ Saídas: `data/interim/current_day.parquet` (dia corrente, mutável),
 `data/processed/correlations/method=<m>/{pairs,matrix}.parquet` + `heatmap_<m>.png`,
 e `data/processed/manifest.yaml`.
 
-Uma amostragem executada de exemplo (com heatmap e `REPORT.md`) fica em [samples/](samples/)
-(`python scripts/make_sample.py`).
+Uma amostragem executada de exemplo (com heatmap e `REPORT.md`) fica em [samples/](samples/) —
+corrida contra o `qData_service` via `config/sample.yaml` (`python scripts/make_sample.py`,
+requer credenciais em `.env`).
 
 ## Testes
 

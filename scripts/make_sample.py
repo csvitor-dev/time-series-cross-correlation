@@ -14,8 +14,8 @@ DEST = Path("samples/win-10d-example")
 
 
 def main() -> None:
-    config = PipelineConfig.load("config/pipeline.yaml")
-    result = run(config, offline=True)
+    config = PipelineConfig.load("config/sample.yaml")
+    result = run(config, offline=False)
 
     processed = Path(config.paths.processed)
     if DEST.exists():
