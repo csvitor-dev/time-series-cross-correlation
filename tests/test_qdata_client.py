@@ -8,7 +8,7 @@ from acquisition.qdata_client import QDataHTTPSource
 from config import QDataSettings
 from contracts.ohlc import OHLCRequest
 
-SETTINGS = QDataSettings(url="https://qdata.test", username="u", password="p")
+SETTINGS = QDataSettings(url="https://qdata.test/api/v1", username="u", password="p")
 
 
 @respx.mock

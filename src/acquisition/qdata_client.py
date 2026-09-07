@@ -7,8 +7,8 @@ from contracts.auth import Credentials, TokenResponse
 from contracts.market_data_source import MarketDataSource
 from contracts.ohlc import OHLCBar, OHLCRequest
 
-_AUTH_ROUTE = "/api/v1/auth/token"
-_OHLC_ROUTE = "/api/v1/distribution/ohlc"
+_AUTH_ROUTE = "/auth/token"
+_OHLC_ROUTE = "/distribution/ohlc"
 
 
 class QDataHTTPSource(MarketDataSource):
