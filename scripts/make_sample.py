@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import shutil
 import sys
+from datetime import date
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parents[1] / "src"))
@@ -15,9 +16,11 @@ DEST = Path("samples/win-10d-example")
 
 def main() -> None:
     config = PipelineConfig.load("config/sample.yaml")
-    result = run(config, offline=False)
+    result = run(config, offline=False, today=date.max)
 
     processed = Path(config.paths.processed)
+    current_partition = processed / "pairs" / f"d_i={result['current_day'].isoformat()}"
+    shutil.rmtree(current_partition, ignore_errors=True)
     if DEST.exists():
         shutil.rmtree(DEST)
     DEST.mkdir(parents=True)
