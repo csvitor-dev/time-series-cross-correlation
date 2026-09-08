@@ -25,6 +25,8 @@ COLOR_WINDOW = "green"
 
 
 def _parse_lags(raw: str) -> list[int]:
+    if ".." in raw:
+        return list(range(*[int(part) for part in raw.split("..")]))
     return [int(part) for part in raw.split(",") if part.strip()]
 
 
@@ -105,10 +107,10 @@ def main() -> None:
     x = np.arange(len(grid))
     ticks = np.linspace(0, len(grid) - 1, num=8, dtype=int)
 
-    ref_tag = "S1" if args.days else "X[t]"
+    ref_tag = "S1" if args.days else "D[n]"
     plan = [(ref_tag, d_i, COLOR_REF)]
     for order, (lag, day) in enumerate(lag_days):
-        tag = f"X[t-{lag}]" if lag is not None else f"S{order + 2}"
+        tag = f"D[n-{lag}]" if lag is not None else f"S{order + 2}"
         plan.append((tag, day, COLOR_LAGS[order % len(COLOR_LAGS)]))
 
     fig, ax = plt.subplots(figsize=(12, 6))
