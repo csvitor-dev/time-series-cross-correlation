@@ -31,6 +31,7 @@ class AnalysisConfig(BaseModel):
     window: Window = Window()
     min_coverage: float = 0.90
     stability_subwindows: int = 3
+    ccf_max_lag: int = 5
 
 
 class PipelineConfig(BaseModel):

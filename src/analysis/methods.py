@@ -12,6 +12,7 @@ class CorrelationResult:
     coefficient: float
     p_value: float
     n: int
+    lag: int = 0
 
 
 class CorrelationMethod(ABC):
@@ -41,14 +42,49 @@ class SpearmanMethod(CorrelationMethod):
         return CorrelationResult(float(result.statistic), float(result.pvalue), len(x))
 
 
+def _shift(x: np.ndarray, y: np.ndarray, lag: int) -> tuple[np.ndarray, np.ndarray]:
+    if lag > 0:
+        return x[: len(x) - lag], y[lag:]
+    if lag < 0:
+        return x[-lag:], y[: len(y) + lag]
+    return x, y
+
+
+class CCFMethod(CorrelationMethod):
+    name = "ccf"
+
+    def __init__(self, max_lag: int = 5):
+        self._max_lag = max_lag
+
+    def compute(self, x: np.ndarray, y: np.ndarray) -> CorrelationResult:
+        best = CorrelationResult(coefficient=float("nan"), p_value=float("nan"), n=len(x), lag=0)
+        if self._max_lag <= 0 or len(x) < 3 + 2 * self._max_lag:
+            return best
+        for lag in range(-self._max_lag, self._max_lag + 1):
+            xs, ys = _shift(x, y, lag)
+            if len(xs) < 3 or np.std(xs) == 0 or np.std(ys) == 0:
+                continue
+            result = stats.pearsonr(xs, ys)
+            if np.isnan(best.coefficient) or abs(result.statistic) > abs(best.coefficient):
+                best = CorrelationResult(
+                    coefficient=float(result.statistic),
+                    p_value=float(result.pvalue),
+                    n=len(xs),
+                    lag=lag,
+                )
+        return best
+
+
 METHODS: dict[str, type[CorrelationMethod]] = {
     PearsonMethod.name: PearsonMethod,
     SpearmanMethod.name: SpearmanMethod,
+    CCFMethod.name: CCFMethod,
 }
 
 
-def get_method(name: str) -> CorrelationMethod:
+def get_method(name: str, max_lag: int = 5) -> CorrelationMethod:
     try:
-        return METHODS[name]()
+        cls = METHODS[name]
     except KeyError:
         raise ValueError(f"método de correlação desconhecido: {name}") from None
+    return cls(max_lag) if cls is CCFMethod else cls()
