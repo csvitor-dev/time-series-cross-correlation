@@ -8,12 +8,14 @@ Investigar e implementar técnicas de correlação cruzada aplicadas a séries t
 
 ## Status
 
-🚧 **Release 2** em desenvolvimento — Camada de Análise: correlação cruzada par a par entre os
-dias de operação, com matriz $\mathbf{V}$, p-valor, estabilidade entre sub-janelas e mapa de calor
-(Pearson e Spearman; ver [docs/ARCHITECTURE.pt-BR.md](docs/ARCHITECTURE.pt-BR.md) §5 e
-[ADR 0004](docs/adr/0004-camada-de-analise-correlacao-cruzada.md)).
-A Release 1 (Captura → Pré-processamento → Armazenamento) já está em `main`.
-Integração com o dashboard, CCF/ρDCCA/MF-DCCA e captura real via API ficam para releases seguintes.
+🚧 **Release 3** em desenvolvimento — CCF (Cross-Correlation Function) com varredura de lags
+intradiários somada aos métodos plugáveis da Camada de Análise (ver
+[docs/ARCHITECTURE.pt-BR.md](docs/ARCHITECTURE.pt-BR.md) §6 e
+[ADR 0005](docs/adr/0005-ccf-com-varredura-de-lags.md)).
+A Release 2 (correlação cruzada par a par com Pearson/Spearman, matriz $\mathbf{V}$, p-valor,
+estabilidade entre sub-janelas e mapa de calor — [ADR 0004](docs/adr/0004-camada-de-analise-correlacao-cruzada.md))
+e a Release 1 (Captura → Pré-processamento → Armazenamento) já estão em `main`.
+Integração com o dashboard, ρDCCA/MF-DCCA e captura real via API ficam para releases seguintes.
 
 ## Requisitos
 

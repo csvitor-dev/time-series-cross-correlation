@@ -118,3 +118,15 @@ The first release covers the **Acquisition**, **Preprocessing**, and **Storage**
 ## 5. Release 2 Scope
 
 The second release implements the **Analysis** layer: given the sealed-day dataset, it computes the correlation matrix $\mathbf{V} = [v_{i,j}]$ between daily series, with $v_{i,j} = \mathrm{corr}(d_i, d_j)$ for $j < i$, and persists the coefficients, the pairwise p-value, and a stability measure across sub-windows. Each day's series is the **close log-return** over a parametrized **uniform intraday window**. Methods are pluggable (`CorrelationMethod`); this release ships **Pearson** and **Spearman** — CCF with lag sweep, ρDCCA, and MF-DCCA follow through the same interface. Visualization produces the **heatmap** of the full, symmetric matrix $\mathbf{V}$ (only the upper triangle is informative, since $v_{i,j}=v_{j,i}$). Dashboard integration remains out of scope. See `docs/adr/0004-camada-de-analise-correlacao-cruzada.md`.
+
+## 6. Release 3 Scope
+
+The third release adds **CCF (Cross-Correlation Function)** with a lag sweep to the Analysis
+layer, as an additional pluggable method via `CorrelationMethod` (`analysis.methods: [..., ccf]`).
+For each pair $(d_i, d_j)$, the coefficient reported in $\mathbf{V}$ becomes the largest-magnitude
+one among the log-returns shifted from $-\text{max\_lag}$ to $+\text{max\_lag}$ minutes
+(`analysis.ccf_max_lag`, default 5), preserving the cell-by-cell comparability already established
+in Release 2; the corresponding lag is persisted in the pairs table (`lag`, in minutes) without
+changing the matrix structure. Pearson and Spearman remain available unchanged through the same
+interface. ρDCCA and MF-DCCA remain candidate methods for future releases. See
+`docs/adr/0005-ccf-com-varredura-de-lags.md`.
