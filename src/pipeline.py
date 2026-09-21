@@ -67,6 +67,7 @@ def _analysis_manifest(config: PipelineConfig, output: AnalysisOutput) -> dict:
         "methods": config.analysis.methods,
         "window": config.analysis.window.model_dump(),
         "min_coverage": config.analysis.min_coverage,
+        "ccf_max_lag": config.analysis.ccf_max_lag,
         "pairs": int(len(output.pairs[method])),
         "coverage": {d.isoformat(): round(c, 4) for d, c in sorted(output.coverage.items())},
     }
