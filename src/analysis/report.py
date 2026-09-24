@@ -26,13 +26,13 @@ def _method_section(name: str, output: AnalysisOutput) -> list[str]:
         "",
         f"Pares: {len(pairs)} · significativos (p < 0.05): {significant}",
         "",
-        "| d_i | d_j | lag (dias) | coef. | p-valor | estab. (σ) |",
-        "|---|---|---|---|---|---|",
+        "| d_i | d_j | lag (dias) | coef. | p-valor | lag (min) | estab. (σ) |",
+        "|---|---|---|---|---|---|---|",
     ]
     for row in top.itertuples(index=False):
         lines.append(
             f"| {row.d_i} | {row.d_j} | {row.lag_days} | {row.coefficient:.3f} | "
-            f"{row.p_value:.3f} | {row.stability_std:.3f} |"
+            f"{row.p_value:.3f} | {row.lag} | {row.stability_std:.3f} |"
         )
     lines += ["", f"![heatmap {name}](correlations/heatmap_{name}.png)", ""]
     return lines

@@ -58,3 +58,16 @@ def test_coverage_reported_per_day():
     output = CrossCorrelationEngine(CFG).run(_frames(3))
     assert set(output.coverage) == {date(2026, 6, 17), date(2026, 6, 18), date(2026, 6, 19)}
     assert all(0.0 <= c <= 1.0 for c in output.coverage.values())
+
+
+def test_ccf_pairs_carry_a_lag_column():
+    cfg = AnalysisConfig(
+        methods=["ccf"],
+        window=Window(start="09:00", end="10:59", tz="America/Sao_Paulo"),
+        stability_subwindows=3,
+        ccf_max_lag=5,
+    )
+    output = CrossCorrelationEngine(cfg).run(_frames(3))
+    pairs = output.pairs["ccf"]
+    assert "lag" in pairs.columns
+    assert pairs["lag"].abs().le(cfg.ccf_max_lag).all()
