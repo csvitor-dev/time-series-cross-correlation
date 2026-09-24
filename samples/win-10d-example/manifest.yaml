@@ -17,17 +17,19 @@ sealed_days:
 - '2026-08-12'
 - '2026-08-13'
 - '2026-08-14'
-generated_at: '2026-09-08T01:03:29.981876+00:00'
+generated_at: '2026-09-24T18:47:56.140831+00:00'
 analysis:
   value: log_return
   methods:
   - pearson
   - spearman
+  - ccf
   window:
     start: 09:00
     end: '17:55'
     tz: America/Sao_Paulo
   min_coverage: 0.9
+  ccf_max_lag: 5
   pairs: 45
   coverage:
     '2026-08-03': 0.9944
