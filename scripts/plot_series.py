@@ -138,11 +138,12 @@ def main() -> None:
         ax.axvline(right, color=COLOR_WINDOW, linestyle="--", linewidth=1.5, label="janela")
 
     ax.set_xticks(ticks, [_hhmm(int(grid[t])) for t in ticks])
-    ax.set_xlabel(f"({cfg.window.tz})")
-    ax.set_ylabel(cfg.value)
-    ax.set_title(args.title or f"{config.symbol} {config.timeframe}")
+    ax.tick_params(labelsize=12)
+    ax.set_xlabel(f"({cfg.window.tz})", fontsize=13)
+    ax.set_ylabel(cfg.value, fontsize=13)
+    ax.set_title(args.title or f"{config.symbol} {config.timeframe}", fontsize=16)
     ax.grid(True, linestyle="--", alpha=0.4)
-    ax.legend(loc="upper right", fontsize=8)
+    ax.legend(loc="upper right", fontsize=11)
     fig.tight_layout()
 
     out = Path(args.out or f"data/processed/plots/series_{d_i.isoformat()}.png")
