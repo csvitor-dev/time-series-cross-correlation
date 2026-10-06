@@ -11,6 +11,7 @@ Decisões arquiteturais relevantes do projeto, no formato [MADR](https://adr.git
 | [0005](0005-ccf-com-varredura-de-lags.md) | CCF com varredura de lags | Aceito |
 | [0006](0006-decomposicao-de-tendencia.md) | Decomposição das séries com foco na tendência | Aceito |
 | [0007](0007-informacao-mutua-rho-dcca-mf-dcca.md) | Informação Mútua, ρDCCA e MF-DCCA (ρ_q) | Aceito |
+| [0008](0008-correlacao-das-tendencias.md) | Correlação das tendências na janela 10:00–17:00 | Aceito |
 
 ## Template
 

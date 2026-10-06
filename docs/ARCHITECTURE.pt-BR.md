@@ -151,3 +151,13 @@ núcleo DCCA (`analysis.dcca`, escala `analysis.dcca_scale`). A significância d
 *surrogates* por deslocamento circular, que preservam a autocorrelação de cada série
 (`analysis.surrogates`, `analysis.seed`). O artefato são os heatmaps dos três métodos na amostragem.
 Ver `docs/adr/0007-informacao-mutua-rho-dcca-mf-dcca.md`.
+
+## 9. Escopo da Release 6
+
+A sexta release liga a decomposição (Release 4) ao motor de correlação: `analysis.trends` define
+as tendências (`moving_average`, `stl`) extraídas do close de cada pregão antes de correlacionar, e
+a série de entrada passa a ser o retorno log da tendência. O motor roda uma vez por tendência e
+persiste cada resultado em `correlations/trend=<t>/`. A amostragem `samples/win-10d-trend/`
+(`config/sample-trend.yaml`) aplica as duas tendências aos 10 pregões na janela contínua
+10:00–17:00 e gera os heatmaps somente de Informação Mútua, ρDCCA e MF-DCCA ($\rho_q$), com escala
+DCCA de 60 min. Ver `docs/adr/0008-correlacao-das-tendencias.md`.

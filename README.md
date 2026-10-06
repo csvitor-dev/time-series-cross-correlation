@@ -8,10 +8,12 @@ Investigar e implementar técnicas de correlação cruzada aplicadas a séries t
 
 ## Status
 
-🚧 **Release 5** em desenvolvimento — Informação Mútua, ρDCCA e MF-DCCA ($\rho_q$) como métodos
-plugáveis, com significância por *surrogates* (ver [docs/ARCHITECTURE.pt-BR.md](docs/ARCHITECTURE.pt-BR.md) §8 e
-[ADR 0007](docs/adr/0007-informacao-mutua-rho-dcca-mf-dcca.md)).
-A Release 4 (decomposição de tendência por média móvel e STL — [ADR 0006](docs/adr/0006-decomposicao-de-tendencia.md)),
+🚧 **Release 6** em desenvolvimento — correlação das tendências (média móvel e STL) dos 10 pregões
+na janela 10:00–17:00 com Informação Mútua, ρDCCA e MF-DCCA (ver
+[docs/ARCHITECTURE.pt-BR.md](docs/ARCHITECTURE.pt-BR.md) §9 e
+[ADR 0008](docs/adr/0008-correlacao-das-tendencias.md)).
+A Release 5 (Informação Mútua, ρDCCA e MF-DCCA — [ADR 0007](docs/adr/0007-informacao-mutua-rho-dcca-mf-dcca.md)),
+a Release 4 (decomposição de tendência por média móvel e STL — [ADR 0006](docs/adr/0006-decomposicao-de-tendencia.md)),
 a Release 3 (CCF com varredura de lags — [ADR 0005](docs/adr/0005-ccf-com-varredura-de-lags.md)),
 a Release 2 (correlação cruzada par a par com Pearson/Spearman, matriz $\mathbf{V}$, p-valor,
 estabilidade entre sub-janelas e mapa de calor — [ADR 0004](docs/adr/0004-camada-de-analise-correlacao-cruzada.md))
@@ -57,7 +59,9 @@ e `data/processed/manifest.yaml`.
 Uma amostragem executada de exemplo (com heatmap e `REPORT.md`) fica em [samples/](samples/) —
 corrida contra o `qData_service` via `config/sample.yaml` (`python scripts/make_sample.py`,
 requer credenciais em `.env`). A decomposição de um pregão (bruto × tendência/sazonal/resíduo) é
-plotada sobre os candles da amostragem com `python scripts/plot_decomposition.py`.
+plotada sobre os candles da amostragem com `python scripts/plot_decomposition.py`. A amostragem
+das tendências usa outra configuração e destino:
+`python scripts/make_sample.py --config config/sample-trend.yaml --dest samples/win-10d-trend`.
 
 ## Testes
 
