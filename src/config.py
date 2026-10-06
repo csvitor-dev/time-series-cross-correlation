@@ -44,6 +44,7 @@ class AnalysisConfig(BaseModel):
     surrogates: int = 199
     seed: int = 0
     decomposition: DecompositionConfig = DecompositionConfig()
+    trends: list[str] = []
 
 
 class PipelineConfig(BaseModel):

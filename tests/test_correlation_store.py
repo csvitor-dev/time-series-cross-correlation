@@ -35,3 +35,13 @@ def test_write_overwrites(tmp_path):
     store.write("spearman", empty, matrix)
     store.write("spearman", empty, matrix)
     assert store.read_matrix("spearman").shape == (1, 1)
+
+
+def test_trend_scope_is_a_separate_partition(tmp_path):
+    raw = CorrelationStore(tmp_path / "processed")
+    stl = CorrelationStore(tmp_path / "processed", "stl")
+    matrix = pd.DataFrame(np.eye(1), index=["d"], columns=["d"])
+    stl.write("mi", pd.DataFrame(columns=["coefficient"]), matrix)
+    assert (tmp_path / "processed" / "correlations" / "trend=stl" / "method=mi").is_dir()
+    assert stl.heatmap_path("mi") == tmp_path / "processed" / "correlations" / "trend=stl" / "heatmap_mi.png"
+    assert raw.heatmap_path("mi") == tmp_path / "processed" / "correlations" / "heatmap_mi.png"

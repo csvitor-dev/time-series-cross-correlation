@@ -1,0 +1,47 @@
+symbol: WINQ26
+timeframe: M1
+period:
+  start: "2025-06-01"
+  end: "2026-08-14"
+reference_window_n: 10
+source: qdata_http
+paths:
+  raw: data/raw
+  interim: data/interim
+  processed: data/processed
+analysis:
+  value: log_return
+  methods: [mi, rho_dcca, mf_dcca]
+  window:
+    start: "10:00"
+    end: "17:00"
+    tz: America/Sao_Paulo
+  min_coverage: 0.90
+  stability_subwindows: 3
+  ccf_max_lag: 5
+  mi_bins: 8
+  dcca_scale: 60
+  mfdcca_q: 4.0
+  surrogates: 199
+  seed: 0
+  decomposition:
+    ma_window: 30
+    stl_period: 30
+    stl_robust: true
+  trends: [moving_average, stl]
+holidays:
+  - "2025-06-19"
+  - "2025-07-09"
+  - "2025-09-07"
+  - "2025-10-12"
+  - "2025-11-02"
+  - "2025-11-15"
+  - "2025-11-20"
+  - "2025-12-25"
+  - "2026-01-01"
+  - "2026-02-16"
+  - "2026-02-17"
+  - "2026-04-03"
+  - "2026-04-21"
+  - "2026-05-01"
+  - "2026-06-04"

@@ -6,8 +6,10 @@ import pandas as pd
 
 
 class CorrelationStore:
-    def __init__(self, processed: str | Path = "data/processed"):
+    def __init__(self, processed: str | Path = "data/processed", trend: str | None = None):
         self._root = Path(processed) / "correlations"
+        if trend:
+            self._root = self._root / f"trend={trend}"
 
     def _dir(self, method: str) -> Path:
         return self._root / f"method={method}"

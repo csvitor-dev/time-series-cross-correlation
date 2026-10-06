@@ -26,9 +26,10 @@ def main() -> None:
     config = PipelineConfig.load(args.config)
 
     if args.analysis_only:
-        output = analyze(config)
-        for method in config.analysis.methods:
-            print(f"{method}: {len(output.pairs[method])} pares")
+        for trend, output in analyze(config).items():
+            prefix = f"[tendência {trend}] " if trend else ""
+            for method in config.analysis.methods:
+                print(f"{prefix}{method}: {len(output.pairs[method])} pares")
         return
 
     result = run(config, offline=args.offline, today=args.today)

@@ -151,3 +151,13 @@ $q = 4$), which generalizes ρDCCA ($\rho_2 = \rho_{DCCA}$) and emphasizes large
 for all three comes from circular-shift *surrogates*, which preserve each series' autocorrelation
 (`analysis.surrogates`, `analysis.seed`). The artifact is the heatmaps of the three methods in the
 sample. See `docs/adr/0007-informacao-mutua-rho-dcca-mf-dcca.md`.
+
+## 9. Release 6 Scope
+
+The sixth release connects decomposition (Release 4) to the correlation engine: `analysis.trends`
+sets the trends (`moving_average`, `stl`) extracted from each session's close before correlating,
+and the input series becomes the trend's log-return. The engine runs once per trend and persists
+each result under `correlations/trend=<t>/`. The `samples/win-10d-trend/` sample
+(`config/sample-trend.yaml`) applies both trends to the 10 sessions over the continuous
+10:00–17:00 window and produces heatmaps only for Mutual Information, ρDCCA and MF-DCCA
+($\rho_q$), with a 60-min DCCA scale. See `docs/adr/0008-correlacao-das-tendencias.md`.

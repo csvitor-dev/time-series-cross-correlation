@@ -89,3 +89,15 @@ def test_new_methods_run_through_the_engine():
         assert pairs["p_value"].between(0.0, 1.0).all()
         assert (pairs["lag"] == 0).all()
     assert (output.pairs["mi"]["coefficient"] >= 0).all()
+
+
+@pytest.mark.parametrize("trend", ["moving_average", "stl"])
+def test_engine_correlates_the_trend_when_requested(trend):
+    cfg = CFG.model_copy(update={"trends": [trend]})
+    raw = CrossCorrelationEngine(cfg).run(_frames(3))
+    decomposed = CrossCorrelationEngine(cfg, trend).run(_frames(3))
+    assert raw.trend is None
+    assert decomposed.trend == trend
+    assert not np.allclose(
+        raw.pairs["pearson"]["coefficient"], decomposed.pairs["pearson"]["coefficient"]
+    )

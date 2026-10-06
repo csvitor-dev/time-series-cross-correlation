@@ -16,21 +16,23 @@ class AnalysisOutput:
     pairs: dict[str, pd.DataFrame]
     matrix: dict[str, pd.DataFrame]
     coverage: dict[date, float]
+    trend: str | None = None
 
 
 class CrossCorrelationEngine:
-    def __init__(self, cfg: AnalysisConfig):
+    def __init__(self, cfg: AnalysisConfig, trend: str | None = None):
         self._cfg = cfg
+        self._trend = trend
 
     def run(self, day_frames: dict[date, pd.DataFrame]) -> AnalysisOutput:
         days = sorted(day_frames)
-        series = [day_series(day_frames[d], self._cfg) for d in days]
+        series = [day_series(day_frames[d], self._cfg, self._trend) for d in days]
         methods = [get_method(name, self._cfg) for name in self._cfg.methods]
 
         pairs = {m.name: self._pairs(days, series, m) for m in methods}
         matrix = {m.name: self._matrix(days, pairs[m.name]) for m in methods}
         coverage = {s.day: s.coverage for s in series}
-        return AnalysisOutput(pairs=pairs, matrix=matrix, coverage=coverage)
+        return AnalysisOutput(pairs=pairs, matrix=matrix, coverage=coverage, trend=self._trend)
 
     def _pairs(
         self, days: list[date], series: list[DaySeries], method: CorrelationMethod

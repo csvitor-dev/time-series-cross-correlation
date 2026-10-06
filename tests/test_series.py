@@ -44,3 +44,19 @@ def test_align_truncates_to_shortest():
     b = day_series(_frame([100.0, 99.0]), CFG)
     x, y = align(a, b)
     assert len(x) == len(y)
+
+
+@pytest.mark.parametrize("trend", ["moving_average", "stl"])
+def test_trend_series_is_the_log_return_of_the_decomposed_trend(trend):
+    from analysis.decomposition import get_decomposer
+    from analysis.series import day_close
+
+    cfg = AnalysisConfig(window=Window(start="09:00", end="10:59", tz="America/Sao_Paulo"))
+    rng = np.random.default_rng(0)
+    frame = _frame(list(100 * np.exp(np.cumsum(rng.normal(0, 0.001, 120)))))
+    close, _ = day_close(frame, cfg)
+    expected = np.diff(np.log(get_decomposer(trend, cfg.decomposition).decompose(close).trend))
+
+    series = day_series(frame, cfg, trend)
+    assert np.allclose(series.values, expected)
+    assert np.std(series.values) < np.std(day_series(frame, cfg).values)
