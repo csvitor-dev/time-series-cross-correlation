@@ -11,7 +11,7 @@ paths:
   processed: data/processed
 analysis:
   value: log_return
-  methods: [pearson, spearman, ccf]
+  methods: [pearson, spearman, ccf, mi, rho_dcca, mf_dcca]
   window:
     start: "09:00"
     end: "17:55"
@@ -19,6 +19,11 @@ analysis:
   min_coverage: 0.90
   stability_subwindows: 3
   ccf_max_lag: 5
+  mi_bins: 8
+  dcca_scale: 20
+  mfdcca_q: 4.0
+  surrogates: 199
+  seed: 0
   decomposition:
     ma_window: 30
     stl_period: 30

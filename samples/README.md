@@ -9,7 +9,8 @@ do pipeline sobre um recorte de dados, versionada junto com os artefatos produzi
   - `candles/date=.../` — candles M1 selados por pregão
   - `pairs/d_i=.../` — estrutura de pares de defasagem $\mathcal{P}_i$
   - `correlations/method=<m>/` — coeficientes $v_{i,j}$, p-valor e estabilidade (`pairs.parquet`)
-    e a matriz $\mathbf{V}$ (`matrix.parquet`), para Pearson e Spearman
+    e a matriz $\mathbf{V}$ (`matrix.parquet`), para Pearson, Spearman, CCF, Informação Mútua
+    (`mi`), ρDCCA (`rho_dcca`) e MF-DCCA (`mf_dcca`, $\rho_q$)
   - `correlations/heatmap_<m>.png` — mapa de calor da matriz $\mathbf{V}$ completa e simétrica
   - `REPORT.md` — parâmetros, cobertura por dia e os pares de maior associação
   - `manifest.yaml` — metadados da execução

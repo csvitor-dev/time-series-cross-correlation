@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from analysis.cross_correlation import AnalysisOutput
-from config import PipelineConfig
+from config import AnalysisConfig, PipelineConfig
 
 
 def _coverage_table(output: AnalysisOutput, min_coverage: float) -> list[str]:
@@ -38,6 +38,22 @@ def _method_section(name: str, output: AnalysisOutput) -> list[str]:
     return lines
 
 
+def _surrogate_parameters(analysis: AnalysisConfig) -> list[str]:
+    names = set(analysis.methods)
+    lines = []
+    if "mi" in names:
+        lines.append(f"- informação mútua: {analysis.mi_bins} bins por quantis")
+    if names & {"rho_dcca", "mf_dcca"}:
+        lines.append(f"- escala DCCA: {analysis.dcca_scale} min")
+    if "mf_dcca" in names:
+        lines.append(f"- ordem q do MF-DCCA (ρ_q): {analysis.mfdcca_q:g}")
+    if names & {"mi", "rho_dcca", "mf_dcca"}:
+        lines.append(
+            f"- surrogates (deslocamento circular): {analysis.surrogates} · semente {analysis.seed}"
+        )
+    return lines
+
+
 def write_report(output: AnalysisOutput, config: PipelineConfig, path: str | Path) -> Path:
     analysis = config.analysis
     lines = [
@@ -50,6 +66,7 @@ def write_report(output: AnalysisOutput, config: PipelineConfig, path: str | Pat
         f"- janela: {analysis.window.start}–{analysis.window.end} ({analysis.window.tz})",
         f"- cobertura mínima: {analysis.min_coverage:.0%}",
         f"- sub-janelas de estabilidade: {analysis.stability_subwindows}",
+        *_surrogate_parameters(analysis),
         "",
         "## Cobertura por dia",
         "",

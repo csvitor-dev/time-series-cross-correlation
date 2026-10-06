@@ -25,7 +25,7 @@ class CrossCorrelationEngine:
     def run(self, day_frames: dict[date, pd.DataFrame]) -> AnalysisOutput:
         days = sorted(day_frames)
         series = [day_series(day_frames[d], self._cfg) for d in days]
-        methods = [get_method(name, max_lag=self._cfg.ccf_max_lag) for name in self._cfg.methods]
+        methods = [get_method(name, self._cfg) for name in self._cfg.methods]
 
         pairs = {m.name: self._pairs(days, series, m) for m in methods}
         matrix = {m.name: self._matrix(days, pairs[m.name]) for m in methods}

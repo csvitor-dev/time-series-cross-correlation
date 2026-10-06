@@ -10,6 +10,7 @@ Decisões arquiteturais relevantes do projeto, no formato [MADR](https://adr.git
 | [0004](0004-camada-de-analise-correlacao-cruzada.md) | Camada de Análise: correlação cruzada par a par | Aceito |
 | [0005](0005-ccf-com-varredura-de-lags.md) | CCF com varredura de lags | Aceito |
 | [0006](0006-decomposicao-de-tendencia.md) | Decomposição das séries com foco na tendência | Aceito |
+| [0007](0007-informacao-mutua-rho-dcca-mf-dcca.md) | Informação Mútua, ρDCCA e MF-DCCA (ρ_q) | Aceito |
 
 ## Template
 

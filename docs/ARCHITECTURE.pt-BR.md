@@ -140,3 +140,14 @@ close de cada pregão, na grade M1 da janela, em tendência, sazonalidade e res�
 (`analysis.decomposition.stl_period`, padrão 30 min). O motor de correlação não muda nesta release;
 o artefato é a figura de um pregão do WIN bruto e decomposto (`scripts/plot_decomposition.py`). Ver
 `docs/adr/0006-decomposicao-de-tendencia.md`.
+
+## 8. Escopo da Release 5
+
+A quinta release adiciona três métodos plugáveis à Camada de Análise: **Informação Mútua** (`mi`,
+coeficiente de Linfoot sobre bins por quantis, em $[0, 1]$), **ρDCCA** (`rho_dcca`) e **MF-DCCA**
+(`mf_dcca`), este reduzido ao coeficiente q-dependente $\rho_q$ (padrão $q = 4$), que generaliza o
+ρDCCA ($\rho_2 = \rho_{DCCA}$) e realça as grandes flutuações. ρDCCA e MF-DCCA compartilham o
+núcleo DCCA (`analysis.dcca`, escala `analysis.dcca_scale`). A significância dos três vem de
+*surrogates* por deslocamento circular, que preservam a autocorrelação de cada série
+(`analysis.surrogates`, `analysis.seed`). O artefato são os heatmaps dos três métodos na amostragem.
+Ver `docs/adr/0007-informacao-mutua-rho-dcca-mf-dcca.md`.

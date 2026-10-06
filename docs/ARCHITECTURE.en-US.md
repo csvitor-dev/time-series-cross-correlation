@@ -140,3 +140,14 @@ the **trend**. Two decomposers are pluggable via `Decomposer`: a **centered movi
 (`analysis.decomposition.stl_period`, default 30 min). The correlation engine is unchanged in this
 release; the artifact is a figure of one WIN session, raw and decomposed
 (`scripts/plot_decomposition.py`). See `docs/adr/0006-decomposicao-de-tendencia.md`.
+
+## 8. Release 5 Scope
+
+The fifth release adds three pluggable methods to the Analysis layer: **Mutual Information**
+(`mi`, Linfoot coefficient over quantile bins, in $[0, 1]$), **ρDCCA** (`rho_dcca`) and
+**MF-DCCA** (`mf_dcca`), the latter reduced to the q-dependent coefficient $\rho_q$ (default
+$q = 4$), which generalizes ρDCCA ($\rho_2 = \rho_{DCCA}$) and emphasizes large fluctuations.
+ρDCCA and MF-DCCA share the DCCA core (`analysis.dcca`, scale `analysis.dcca_scale`). Significance
+for all three comes from circular-shift *surrogates*, which preserve each series' autocorrelation
+(`analysis.surrogates`, `analysis.seed`). The artifact is the heatmaps of the three methods in the
+sample. See `docs/adr/0007-informacao-mutua-rho-dcca-mf-dcca.md`.

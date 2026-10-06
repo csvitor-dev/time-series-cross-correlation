@@ -71,3 +71,21 @@ def test_ccf_pairs_carry_a_lag_column():
     pairs = output.pairs["ccf"]
     assert "lag" in pairs.columns
     assert pairs["lag"].abs().le(cfg.ccf_max_lag).all()
+
+
+def test_new_methods_run_through_the_engine():
+    cfg = AnalysisConfig(
+        methods=["mi", "rho_dcca", "mf_dcca"],
+        window=Window(start="09:00", end="10:59", tz="America/Sao_Paulo"),
+        stability_subwindows=3,
+        dcca_scale=10,
+        surrogates=19,
+    )
+    output = CrossCorrelationEngine(cfg).run(_frames(3))
+    for name in cfg.methods:
+        pairs = output.pairs[name]
+        assert len(pairs) == 3
+        assert pairs["coefficient"].between(-1.0, 1.0).all()
+        assert pairs["p_value"].between(0.0, 1.0).all()
+        assert (pairs["lag"] == 0).all()
+    assert (output.pairs["mi"]["coefficient"] >= 0).all()
