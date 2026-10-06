@@ -24,7 +24,7 @@ def _minute_grid(cfg: AnalysisConfig) -> np.ndarray:
     return np.arange(start_min, end_min + 1)
 
 
-def day_series(frame: pd.DataFrame, cfg: AnalysisConfig) -> DaySeries:
+def day_close(frame: pd.DataFrame, cfg: AnalysisConfig) -> tuple[np.ndarray, float]:
     grid = _minute_grid(cfg)
     local = (
         pd.to_datetime(frame["time"], unit="s", utc=True)
@@ -45,8 +45,12 @@ def day_series(frame: pd.DataFrame, cfg: AnalysisConfig) -> DaySeries:
     imputed = day["imputed"].fillna(True).astype(bool).to_numpy()
     real = day["close"].notna().to_numpy() & ~imputed
     coverage = float(real.sum()) / len(grid)
+    return day["close"].ffill().bfill().to_numpy(), coverage
 
-    close = day["close"].ffill().bfill()
+
+def day_series(frame: pd.DataFrame, cfg: AnalysisConfig) -> DaySeries:
+    raw, coverage = day_close(frame, cfg)
+    close = pd.Series(raw)
     log_return = np.log(close / close.shift(1)).to_numpy()[1:]
     log_return = np.nan_to_num(log_return, nan=0.0, posinf=0.0, neginf=0.0)
 
