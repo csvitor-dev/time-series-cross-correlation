@@ -25,6 +25,12 @@ class Window(BaseModel):
     tz: str = "America/Sao_Paulo"
 
 
+class DecompositionConfig(BaseModel):
+    ma_window: int = 30
+    stl_period: int = 30
+    stl_robust: bool = True
+
+
 class AnalysisConfig(BaseModel):
     value: str = "log_return"
     methods: list[str] = ["pearson", "spearman"]
@@ -32,6 +38,7 @@ class AnalysisConfig(BaseModel):
     min_coverage: float = 0.90
     stability_subwindows: int = 3
     ccf_max_lag: int = 5
+    decomposition: DecompositionConfig = DecompositionConfig()
 
 
 class PipelineConfig(BaseModel):
