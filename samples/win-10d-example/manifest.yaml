@@ -17,19 +17,27 @@ sealed_days:
 - '2026-08-12'
 - '2026-08-13'
 - '2026-08-14'
-generated_at: '2026-09-24T18:47:56.140831+00:00'
+generated_at: '2026-10-06T00:19:03.374642+00:00'
 analysis:
   value: log_return
   methods:
   - pearson
   - spearman
   - ccf
+  - mi
+  - rho_dcca
+  - mf_dcca
   window:
     start: 09:00
     end: '17:55'
     tz: America/Sao_Paulo
   min_coverage: 0.9
   ccf_max_lag: 5
+  mi_bins: 8
+  dcca_scale: 20
+  mfdcca_q: 4.0
+  surrogates: 199
+  seed: 0
   pairs: 45
   coverage:
     '2026-08-03': 0.9944
