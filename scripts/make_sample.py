@@ -12,6 +12,7 @@ from config import PipelineConfig
 from pipeline import run
 
 DEST = Path("samples/win-10d-example")
+GENERATED = ("candles", "pairs", "correlations")
 
 
 def main() -> None:
@@ -21,12 +22,10 @@ def main() -> None:
     processed = Path(config.paths.processed)
     current_partition = processed / "pairs" / f"d_i={result['current_day'].isoformat()}"
     shutil.rmtree(current_partition, ignore_errors=True)
-    if DEST.exists():
-        shutil.rmtree(DEST)
-    DEST.mkdir(parents=True)
-    shutil.copytree(processed / "candles", DEST / "candles")
-    shutil.copytree(processed / "pairs", DEST / "pairs")
-    shutil.copytree(processed / "correlations", DEST / "correlations")
+    DEST.mkdir(parents=True, exist_ok=True)
+    for part in GENERATED:
+        shutil.rmtree(DEST / part, ignore_errors=True)
+        shutil.copytree(processed / part, DEST / part)
     shutil.copy2(processed / "manifest.yaml", DEST / "manifest.yaml")
 
     write_report(result["analysis"], config, DEST / "REPORT.md")
