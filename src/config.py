@@ -38,6 +38,11 @@ class AnalysisConfig(BaseModel):
     min_coverage: float = 0.90
     stability_subwindows: int = 3
     ccf_max_lag: int = 5
+    mi_bins: int = 8
+    dcca_scale: int = 20
+    mfdcca_q: float = 4.0
+    surrogates: int = 199
+    seed: int = 0
     decomposition: DecompositionConfig = DecompositionConfig()
 
 
