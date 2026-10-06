@@ -68,6 +68,11 @@ def _analysis_manifest(config: PipelineConfig, output: AnalysisOutput) -> dict:
         "window": config.analysis.window.model_dump(),
         "min_coverage": config.analysis.min_coverage,
         "ccf_max_lag": config.analysis.ccf_max_lag,
+        "mi_bins": config.analysis.mi_bins,
+        "dcca_scale": config.analysis.dcca_scale,
+        "mfdcca_q": config.analysis.mfdcca_q,
+        "surrogates": config.analysis.surrogates,
+        "seed": config.analysis.seed,
         "pairs": int(len(output.pairs[method])),
         "coverage": {d.isoformat(): round(c, 4) for d, c in sorted(output.coverage.items())},
     }
