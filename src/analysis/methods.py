@@ -6,6 +6,8 @@ from dataclasses import dataclass
 import numpy as np
 from scipy import stats
 
+from config import AnalysisConfig
+
 
 @dataclass(frozen=True)
 class CorrelationResult:
@@ -17,6 +19,10 @@ class CorrelationResult:
 
 class CorrelationMethod(ABC):
     name: str
+
+    @classmethod
+    def from_config(cls, cfg: AnalysisConfig) -> CorrelationMethod:
+        return cls()
 
     @abstractmethod
     def compute(self, x: np.ndarray, y: np.ndarray) -> CorrelationResult: ...
@@ -56,6 +62,10 @@ class CCFMethod(CorrelationMethod):
     def __init__(self, max_lag: int = 5):
         self._max_lag = max_lag
 
+    @classmethod
+    def from_config(cls, cfg: AnalysisConfig) -> CCFMethod:
+        return cls(cfg.ccf_max_lag)
+
     def compute(self, x: np.ndarray, y: np.ndarray) -> CorrelationResult:
         best = CorrelationResult(coefficient=float("nan"), p_value=float("nan"), n=len(x), lag=0)
         if self._max_lag <= 0 or len(x) < 3 + 2 * self._max_lag:
@@ -82,9 +92,9 @@ METHODS: dict[str, type[CorrelationMethod]] = {
 }
 
 
-def get_method(name: str, max_lag: int = 5) -> CorrelationMethod:
+def get_method(name: str, cfg: AnalysisConfig | None = None) -> CorrelationMethod:
     try:
         cls = METHODS[name]
     except KeyError:
         raise ValueError(f"método de correlação desconhecido: {name}") from None
-    return cls(max_lag) if cls is CCFMethod else cls()
+    return cls.from_config(cfg or AnalysisConfig())
