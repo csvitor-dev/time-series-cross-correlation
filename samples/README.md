@@ -18,6 +18,13 @@ do pipeline sobre um recorte de dados, versionada junto com os artefatos produzi
   - `decomposition/series.png` e `decomposition/decomposed.png` — o último pregão bruto e
     decomposto (tendência por média móvel e STL, sazonal e resíduo —
     `scripts/plot_decomposition.py`)
+- `win-10d-trend/` — os mesmos 10 pregões, correlacionados pela **tendência** (média móvel e STL)
+  na janela 10:00–17:00, só com Informação Mútua, ρDCCA e MF-DCCA (`config/sample-trend.yaml`;
+  `python scripts/make_sample.py --config config/sample-trend.yaml --dest samples/win-10d-trend`):
+  - `correlations/trend=<t>/method=<m>/` e `correlations/trend=<t>/heatmap_<m>.png` — uma partição
+    por tendência (`moving_average`, `stl`)
+  - `REPORT.md` — uma seção por tendência; `manifest.yaml` registra tendências e parâmetros de
+    decomposição
 
 Os dados são reais (M1 do WINQ26, fonte `qData_service`), então a associação entre pregões
 é fraca — o mapa de calor reflete a estrutura efetivamente presente no mercado no período.
