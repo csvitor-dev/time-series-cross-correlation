@@ -130,3 +130,13 @@ na Release 2; o lag correspondente é persistido na tabela de pares (`lag`, em m
 a estrutura da matriz. Pearson e Spearman continuam disponíveis inalterados pela mesma interface.
 ρDCCA e MF-DCCA seguem como métodos candidatos para releases futuras. Ver
 `docs/adr/0005-ccf-com-varredura-de-lags.md`.
+
+## 7. Escopo da Release 4
+
+A quarta release adiciona um **módulo de decomposição** (`analysis.decomposition`) que separa o
+close de cada pregão, na grade M1 da janela, em tendência, sazonalidade e resíduo, com foco na
+**tendência**. São dois decompositores plugáveis via `Decomposer`: **média móvel centrada**
+(`analysis.decomposition.ma_window`, padrão 30 min) e **STL** robusto
+(`analysis.decomposition.stl_period`, padrão 30 min). O motor de correlação não muda nesta release;
+o artefato é a figura de um pregão do WIN bruto e decomposto (`scripts/plot_decomposition.py`). Ver
+`docs/adr/0006-decomposicao-de-tendencia.md`.

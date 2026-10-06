@@ -19,6 +19,10 @@ analysis:
   min_coverage: 0.90
   stability_subwindows: 3
   ccf_max_lag: 5
+  decomposition:
+    ma_window: 30
+    stl_period: 30
+    stl_robust: true
 holidays:
   - "2025-06-19"
   - "2025-07-09"

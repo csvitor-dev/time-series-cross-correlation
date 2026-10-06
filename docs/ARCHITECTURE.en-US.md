@@ -130,3 +130,13 @@ in Release 2; the corresponding lag is persisted in the pairs table (`lag`, in m
 changing the matrix structure. Pearson and Spearman remain available unchanged through the same
 interface. ρDCCA and MF-DCCA remain candidate methods for future releases. See
 `docs/adr/0005-ccf-com-varredura-de-lags.md`.
+
+## 7. Release 4 Scope
+
+The fourth release adds a **decomposition module** (`analysis.decomposition`) that splits each
+session's close, on the window's M1 grid, into trend, seasonal and residual components, focusing on
+the **trend**. Two decomposers are pluggable via `Decomposer`: a **centered moving average**
+(`analysis.decomposition.ma_window`, default 30 min) and robust **STL**
+(`analysis.decomposition.stl_period`, default 30 min). The correlation engine is unchanged in this
+release; the artifact is a figure of one WIN session, raw and decomposed
+(`scripts/plot_decomposition.py`). See `docs/adr/0006-decomposicao-de-tendencia.md`.

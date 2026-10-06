@@ -8,6 +8,8 @@ Decisões arquiteturais relevantes do projeto, no formato [MADR](https://adr.git
 | [0002](0002-contrato-da-fonte-de-dados.md) | Contrato da fonte de dados e cliente REST do qData_service | Aceito |
 | [0003](0003-armazenamento-parquet-por-mutabilidade.md) | Armazenamento em Parquet separado por mutabilidade | Aceito |
 | [0004](0004-camada-de-analise-correlacao-cruzada.md) | Camada de Análise: correlação cruzada par a par | Aceito |
+| [0005](0005-ccf-com-varredura-de-lags.md) | CCF com varredura de lags | Aceito |
+| [0006](0006-decomposicao-de-tendencia.md) | Decomposição das séries com foco na tendência | Aceito |
 
 ## Template
 

@@ -8,11 +8,11 @@ Investigar e implementar técnicas de correlação cruzada aplicadas a séries t
 
 ## Status
 
-🚧 **Release 3** em desenvolvimento — CCF (Cross-Correlation Function) com varredura de lags
-intradiários somada aos métodos plugáveis da Camada de Análise (ver
-[docs/ARCHITECTURE.pt-BR.md](docs/ARCHITECTURE.pt-BR.md) §6 e
-[ADR 0005](docs/adr/0005-ccf-com-varredura-de-lags.md)).
-A Release 2 (correlação cruzada par a par com Pearson/Spearman, matriz $\mathbf{V}$, p-valor,
+🚧 **Release 4** em desenvolvimento — decomposição das séries com foco na tendência (média móvel
+centrada e STL), ver [docs/ARCHITECTURE.pt-BR.md](docs/ARCHITECTURE.pt-BR.md) §7 e
+[ADR 0006](docs/adr/0006-decomposicao-de-tendencia.md).
+A Release 3 (CCF com varredura de lags — [ADR 0005](docs/adr/0005-ccf-com-varredura-de-lags.md)),
+a Release 2 (correlação cruzada par a par com Pearson/Spearman, matriz $\mathbf{V}$, p-valor,
 estabilidade entre sub-janelas e mapa de calor — [ADR 0004](docs/adr/0004-camada-de-analise-correlacao-cruzada.md))
 e a Release 1 (Captura → Pré-processamento → Armazenamento) já estão em `main`.
 Integração com o dashboard, ρDCCA/MF-DCCA e captura real via API ficam para releases seguintes.
@@ -55,7 +55,8 @@ e `data/processed/manifest.yaml`.
 
 Uma amostragem executada de exemplo (com heatmap e `REPORT.md`) fica em [samples/](samples/) —
 corrida contra o `qData_service` via `config/sample.yaml` (`python scripts/make_sample.py`,
-requer credenciais em `.env`).
+requer credenciais em `.env`). A decomposição de um pregão (bruto × tendência/sazonal/resíduo) é
+plotada sobre os candles da amostragem com `python scripts/plot_decomposition.py`.
 
 ## Testes
 
