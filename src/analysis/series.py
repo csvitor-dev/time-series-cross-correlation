@@ -6,6 +6,7 @@ from datetime import date
 import numpy as np
 import pandas as pd
 
+from analysis.decomposition import get_decomposer
 from config import AnalysisConfig
 
 
@@ -48,8 +49,12 @@ def day_close(frame: pd.DataFrame, cfg: AnalysisConfig) -> tuple[np.ndarray, flo
     return day["close"].ffill().bfill().to_numpy(), coverage
 
 
-def day_series(frame: pd.DataFrame, cfg: AnalysisConfig) -> DaySeries:
+def day_series(
+    frame: pd.DataFrame, cfg: AnalysisConfig, trend: str | None = None
+) -> DaySeries:
     raw, coverage = day_close(frame, cfg)
+    if trend:
+        raw = get_decomposer(trend, cfg.decomposition).decompose(raw).trend
     close = pd.Series(raw)
     log_return = np.log(close / close.shift(1)).to_numpy()[1:]
     log_return = np.nan_to_num(log_return, nan=0.0, posinf=0.0, neginf=0.0)
