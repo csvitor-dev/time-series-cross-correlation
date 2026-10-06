@@ -13,7 +13,10 @@ do pipeline sobre um recorte de dados, versionada junto com os artefatos produzi
   - `correlations/heatmap_<m>.png` — mapa de calor da matriz $\mathbf{V}$ completa e simétrica
   - `REPORT.md` — parâmetros, cobertura por dia e os pares de maior associação
   - `manifest.yaml` — metadados da execução
-  - `series.png` — closes intradiários dos 10 pregões (`scripts/plot_series.py`)
+  - `time-series.png` — closes intradiários dos 10 pregões (`scripts/plot_series.py`)
+  - `decomposition/series.png` e `decomposition/decomposed.png` — o último pregão bruto e
+    decomposto (tendência por média móvel e STL, sazonal e resíduo —
+    `scripts/plot_decomposition.py`)
 
 Os dados são reais (M1 do WINQ26, fonte `qData_service`), então a associação entre pregões
 é fraca — o mapa de calor reflete a estrutura efetivamente presente no mercado no período.
