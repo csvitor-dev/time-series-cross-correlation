@@ -15,14 +15,14 @@ def _coverage_table(output: AnalysisOutput, min_coverage: float) -> list[str]:
     return lines
 
 
-def _method_section(name: str, output: AnalysisOutput) -> list[str]:
+def _method_section(name: str, output: AnalysisOutput, heading: str = "###") -> list[str]:
     pairs = output.pairs[name].copy()
     pairs["abs"] = pairs["coefficient"].abs()
     top = pairs.sort_values("abs", ascending=False).head(10)
     significant = int((pairs["p_value"] < 0.05).sum())
 
     lines = [
-        f"### {name}",
+        f"{heading} {name}",
         "",
         f"Pares: {len(pairs)} · significativos (p < 0.05): {significant}",
         "",
@@ -34,7 +34,8 @@ def _method_section(name: str, output: AnalysisOutput) -> list[str]:
             f"| {row.d_i} | {row.d_j} | {row.lag_days} | {row.coefficient:.3f} | "
             f"{row.p_value:.3f} | {row.lag} | {row.stability_std:.3f} |"
         )
-    lines += ["", f"![heatmap {name}](correlations/heatmap_{name}.png)", ""]
+    scope = f"trend={output.trend}/" if output.trend else ""
+    lines += ["", f"![heatmap {name}](correlations/{scope}heatmap_{name}.png)", ""]
     return lines
 
 
@@ -54,8 +55,22 @@ def _surrogate_parameters(analysis: AnalysisConfig) -> list[str]:
     return lines
 
 
-def write_report(output: AnalysisOutput, config: PipelineConfig, path: str | Path) -> Path:
+def _trend_parameters(analysis: AnalysisConfig) -> list[str]:
+    if not analysis.trends:
+        return []
+    params = analysis.decomposition
+    return [
+        f"- tendências: {', '.join(analysis.trends)} (série = `{analysis.value}` da tendência)",
+        f"- média móvel centrada: {params.ma_window} min · STL: período {params.stl_period} min"
+        f"{' (robusto)' if params.stl_robust else ''}",
+    ]
+
+
+def write_report(
+    outputs: dict[str | None, AnalysisOutput], config: PipelineConfig, path: str | Path
+) -> Path:
     analysis = config.analysis
+    output = next(iter(outputs.values()))
     lines = [
         f"# Amostragem — correlação cruzada ({config.symbol}, {len(output.coverage)} dias)",
         "",
@@ -67,6 +82,7 @@ def write_report(output: AnalysisOutput, config: PipelineConfig, path: str | Pat
         f"- cobertura mínima: {analysis.min_coverage:.0%}",
         f"- sub-janelas de estabilidade: {analysis.stability_subwindows}",
         *_surrogate_parameters(analysis),
+        *_trend_parameters(analysis),
         "",
         "## Cobertura por dia",
         "",
@@ -75,8 +91,13 @@ def write_report(output: AnalysisOutput, config: PipelineConfig, path: str | Pat
         "## Resultados",
         "",
     ]
-    for name in analysis.methods:
-        lines += _method_section(name, output)
+    for trend, result in outputs.items():
+        heading = "###"
+        if trend:
+            lines += [f"### Tendência · {trend}", ""]
+            heading = "####"
+        for name in analysis.methods:
+            lines += _method_section(name, result, heading)
 
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)

@@ -46,22 +46,35 @@ def _load_frames(config: PipelineConfig, days: list[date]) -> dict[date, pd.Data
     return frames
 
 
-def analyze(config: PipelineConfig, *, days: list[date] | None = None) -> AnalysisOutput:
+def analyze(
+    config: PipelineConfig, *, days: list[date] | None = None
+) -> dict[str | None, AnalysisOutput]:
     days = days or _window_days(config)
     frames = _load_frames(config, days)
 
-    engine = CrossCorrelationEngine(config.analysis)
-    output = engine.run(frames)
+    outputs: dict[str | None, AnalysisOutput] = {}
+    for trend in config.analysis.trends or [None]:
+        output = CrossCorrelationEngine(config.analysis, trend).run(frames)
+        store = CorrelationStore(config.paths.processed, trend)
+        for method in config.analysis.methods:
+            store.write(method, output.pairs[method], output.matrix[method])
+            title = f"{method} · tendência {trend}" if trend else method
+            plot_heatmap(output.matrix[method], title, store.heatmap_path(method))
+        outputs[trend] = output
+    return outputs
 
-    store = CorrelationStore(config.paths.processed)
-    for method in config.analysis.methods:
-        store.write(method, output.pairs[method], output.matrix[method])
-        plot_heatmap(output.matrix[method], method, store.heatmap_path(method))
-    return output
 
-
-def _analysis_manifest(config: PipelineConfig, output: AnalysisOutput) -> dict:
+def _analysis_manifest(
+    config: PipelineConfig, outputs: dict[str | None, AnalysisOutput]
+) -> dict:
     method = config.analysis.methods[0]
+    output = next(iter(outputs.values()))
+    trends = {}
+    if config.analysis.trends:
+        trends = {
+            "trends": config.analysis.trends,
+            "decomposition": config.analysis.decomposition.model_dump(),
+        }
     return {
         "value": config.analysis.value,
         "methods": config.analysis.methods,
@@ -73,6 +86,7 @@ def _analysis_manifest(config: PipelineConfig, output: AnalysisOutput) -> dict:
         "mfdcca_q": config.analysis.mfdcca_q,
         "surrogates": config.analysis.surrogates,
         "seed": config.analysis.seed,
+        **trends,
         "pairs": int(len(output.pairs[method])),
         "coverage": {d.isoformat(): round(c, 4) for d, c in sorted(output.coverage.items())},
     }
@@ -103,7 +117,7 @@ def run(config: PipelineConfig, *, offline: bool = False, today: date | None = N
         predecessors = [d for d in processed_window if d < reference_day]
         pairs.build_pairs(reference_day, predecessors)
 
-    output = analyze(config, days=window)
+    outputs = analyze(config, days=window)
 
     raw_files = sorted(Path(config.paths.raw).glob("*.json"))
     manifest_file = manifest.write(
@@ -114,11 +128,11 @@ def run(config: PipelineConfig, *, offline: bool = False, today: date | None = N
         source="fixture" if offline or config.source == "fixture" else config.source,
         input_sha256=sha256_paths(raw_files) if raw_files else "",
         sealed_days=[d.isoformat() for d in sealed],
-        analysis=_analysis_manifest(config, output),
+        analysis=_analysis_manifest(config, outputs),
     )
     return {
         "sealed_days": sealed,
         "current_day": current_day,
         "manifest": manifest_file,
-        "analysis": output,
+        "analysis": outputs,
     }
